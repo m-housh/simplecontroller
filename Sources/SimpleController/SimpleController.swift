@@ -10,7 +10,7 @@ import Fluent
 //import FluentSQLite
 
 
-protocol ModelController {
+public protocol ModelController {
     
     associatedtype DBModel: Model, Parameter
     

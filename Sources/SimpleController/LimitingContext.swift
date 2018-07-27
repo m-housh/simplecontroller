@@ -7,7 +7,7 @@
 
 import Vapor
 
-struct LimitingContext: Content {
+public struct LimitingContext: Content {
     
     let limit: Int?
     let startIndex: Int?

@@ -9,7 +9,7 @@ import Fluent
 
 extension QueryBuilder {
     
-    func limit(_ ctx: LimitingContext) -> Self {
+    public func limit(_ ctx: LimitingContext) -> Self {
         var start: Int = 0
         var end: Int? = nil
         

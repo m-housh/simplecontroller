@@ -8,3 +8,5 @@ before_install:
     - vapor update -y
 script:
     - vapor test
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

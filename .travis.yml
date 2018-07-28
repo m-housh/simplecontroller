@@ -1,0 +1,8 @@
+language: objective-c
+osx_image: xcode9.4
+before_install:
+    - brew upgrade
+    - brew outdated xctool || brew upgrade xctool
+    - brew install vapor    
+script:
+    - vapor test

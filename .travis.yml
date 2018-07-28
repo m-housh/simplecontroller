@@ -4,5 +4,6 @@ before_install:
     - brew upgrade
     - brew outdated xctool || brew upgrade xctool
     - brew cask install vapor    
+    - vapor update -y
 script:
     - vapor test

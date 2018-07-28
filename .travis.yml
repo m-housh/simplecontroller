@@ -9,4 +9,4 @@ before_install:
 script:
     - vapor test
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash) -t f5afd654-b236-457e-abef-bd5928227528

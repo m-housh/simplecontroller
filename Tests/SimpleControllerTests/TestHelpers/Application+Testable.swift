@@ -84,9 +84,10 @@ extension Application {
         return try self.getResponse(to: path, method: method, headers: headers, data: emptyContent, decodeTo: type)
     }
     
+    /*
     func sendRequest<T>(to path: String, method: HTTPMethod, headers: HTTPHeaders, data: T) throws where T: Content {
         _ = try self.sendRequest(to: path, method: method, headers: headers, body: data)
-    }
+    }*/
     
     func sendRequest(to path: String, method: HTTPMethod, headers: HTTPHeaders = .init()) throws -> Response {
         let emptyContent: EmptyContent? = nil

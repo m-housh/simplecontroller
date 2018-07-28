@@ -103,8 +103,10 @@ final class SimpleControllerTests: VaporTestCase {
             foos = try app.getResponse(to: "\(fooURI)?startIndex=-1&limit=1", decodeTo: [Foo].self)
             XCTAssertEqual(foos.count, 1)
         }
+        
+        
     }
-
+    
 
     static var allTests = [
         ("testExample", testExample),
@@ -113,6 +115,6 @@ final class SimpleControllerTests: VaporTestCase {
         ("testGetOne", testGetOne),
         ("testPut", testPut),
         ("testDelete", testDelete),
-        ("testLimit", testLimit)
+        ("testLimit", testLimit),
     ]
 }

@@ -3,11 +3,10 @@ osx_image: xcode9.4
 before_install:
     - brew tap vapor/homebrew-tap
     - brew upgrade
-    - brew outdated xctool || brew upgrade xctool
     - brew install vapor    
-    - vapor update -y
+    - swift package resolve
+    - swift package generate-xcodeproj
 script:
-    - xctool --help
-    - xctool -project SimpleController.xcodeproj -scheme SimpleController-Package run-tests
+    - swift test
 after_success:
   - bash <(curl -s https://codecov.io/bash)

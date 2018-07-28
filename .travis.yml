@@ -7,6 +7,7 @@ before_install:
     - brew install vapor    
     - vapor update -y
 script:
-    - vapor test
+    - xcodebuild --version
+    - xcodebuild -project SimpleController.xcodeproj -enableCodeCoverage YES test
 after_success:
-  - bash <(curl -s https://codecov.io/bash) -t f5afd654-b236-457e-abef-bd5928227528
+  - bash <(curl -s https://codecov.io/bash)

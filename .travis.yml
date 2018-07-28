@@ -8,5 +8,7 @@ before_install:
     - brew outdated xctool || brew upgrade xctool
     - brew install vapor    
     - vapor update -y
+script:
+    - xctool -project SimpleController.xcodeproj -scheme SimpleController-Package test
 after_success:
   - bash <(curl -s https://codecov.io/bash)

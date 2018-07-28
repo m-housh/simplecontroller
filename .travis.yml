@@ -1,7 +1,5 @@
 language: objective-c
 osx_image: xcode9.4
-xcode_project: SimpleController.xcodeproj
-xcode_scheme: SimpleController-Package
 before_install:
     - brew tap vapor/homebrew-tap
     - brew upgrade
@@ -9,6 +7,6 @@ before_install:
     - brew install vapor    
     - vapor update -y
 script:
-    - xctool -project SimpleController.xcodeproj -scheme SimpleController-Package test
+    - xctool -project SimpleController.xcodeproj -scheme SimpleController-Package run-tests
 after_success:
   - bash <(curl -s https://codecov.io/bash)

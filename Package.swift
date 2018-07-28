@@ -16,9 +16,15 @@ let package = Package(
         // .package(url: /* package url */, from: "1.0.0"),
         
         // 💧 A server-side Swift web framework.
+        // Vapor
         .package(url: "https://github.com/vapor/vapor.git", from: "3.0.0"),
+        
         // Fluent
         .package(url: "https://github.com/vapor/fluent.git", from: "3.0.0"),
+        
+        // FluentSQLite, used for tests.
+        .package(url: "https://github.com/vapor/fluent-sqlite.git", from: "3.0.0"),
+
 
     ],
     targets: [
@@ -29,6 +35,6 @@ let package = Package(
             dependencies: ["Vapor", "Fluent"]),
         .testTarget(
             name: "SimpleControllerTests",
-            dependencies: ["SimpleController"]),
+            dependencies: ["SimpleController", "FluentSQLite"]),
     ]
 )

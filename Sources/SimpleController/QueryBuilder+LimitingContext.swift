@@ -7,30 +7,33 @@
 
 import Fluent
 
+/// Add's the `limit` method to `QueryBuilder`,
+/// this allows for the any query to use the `LimitingContext`
+///
+/// Example:
+/// `Foo.query(on: request).limit(try request.limitingContext()).all()`
 extension QueryBuilder {
     
+    // TODO: This should be cleaned up
+    /// Limit's the query, if applicable.
     public func limit(_ ctx: LimitingContext) -> Self {
         var start: Int = 0
-        var end: Int? = nil
+        var end: Int? = ctx.limit
         
-        if let limit = ctx.limit {
-            end = limit
-        }
-        
-        if let startIndex = ctx.startIndex {
+        if let startIndex = ctx.startIndex, startIndex > 0 {
             start = startIndex
-            if let strongEnd = end {
-                end = strongEnd + start
+            if let ctxEnd = ctx.endIndex {
+                return range(start...ctxEnd)
             }
-        }
-        
-        if let endIndex = ctx.endIndex {
-            end = endIndex
+            else if end != nil {
+                end = end! + start
+            }
         }
         
         guard let strongEnd = end else {
             return self
         }
+
         return range(start..<strongEnd)
     }
 }

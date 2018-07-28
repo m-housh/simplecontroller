@@ -2,7 +2,7 @@
 ----------------------------
 
 ![https://travis-ci.org/m-hous/simplecontroller](https://img.shields.io/travis/m-housh/simplecontroller.svg)
-![codecov](https://codecov.io/gh/m-housh/simplecontroller/branch/master/graph/badge.svg)](https://codecov.io/gh/m-housh/simplecontroller)
+![codecov](https://codecov.io/gh/m-housh/simplecontroller/branch/master/graph/badge.svg)(https://codecov.io/gh/m-housh/simplecontroller)
 
 Allows for simple / quick `CRUD` controller's for `Vapor-3` database models.
 This can be used to quickly proto-type or if you have some models that just need

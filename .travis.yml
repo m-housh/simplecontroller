@@ -8,6 +8,6 @@ before_install:
     - vapor update -y
 script:
     - xcodebuild --version
-    - xcodebuild -project SimpleController.xcodeproj -enableCodeCoverage YES test
+    - xcodebuild -project SimpleController.xcodeproj -scheme SimpleController-Package -sdk macosx -enableCodeCoverage YES test
 after_success:
   - bash <(curl -s https://codecov.io/bash)

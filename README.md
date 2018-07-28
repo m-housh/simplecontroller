@@ -1,16 +1,20 @@
 # SimpleController
 ----------------------------
 
-[![https://travis-ci.org/m-hous/simplecontroller](https://img.shields.io/travis/m-housh/simplecontroller.svg)
-[[![codecov](https://codecov.io/gh/m-housh/simplecontroller/branch/master/graph/badge.svg)](https://codecov.io/gh/m-housh/simplecontroller)
+![https://travis-ci.org/m-hous/simplecontroller](https://img.shields.io/travis/m-housh/simplecontroller.svg)
+![codecov](https://codecov.io/gh/m-housh/simplecontroller/branch/master/graph/badge.svg)](https://codecov.io/gh/m-housh/simplecontroller)
 
 Allows for simple / quick `CRUD` controller's for `Vapor-3` database models.
+This can be used to quickly proto-type or if you have some models that just need
+basic CRUD operations.
 
 
 ## Usage
----------------
 
 ### Package.swift
+
+Add the `SimpleController` package to your `Vapor3` project.
+
 ``` swift
     import PackageDescription
 
@@ -87,6 +91,8 @@ Create a controller for our model.
             router.post(path, use: createHandler)
             router.put(path, Foo.parameter, use: updateHandler)
             router.delete(path, Foo.parameter, use: deleteHandler)
+
+            /// Add more addvanced / custom routes if needed
         }
     
     }
@@ -106,6 +112,7 @@ Register your routes.
             return "Hello, world!"
         }
 
+        // Create a `FooController` to register with our router.
         let fooController = FooController()
         router.register(collection: fooController)
     }
@@ -116,6 +123,8 @@ path also has functionality to limit the results.  This can be done in different
 ways depending on the query parameters.
 
 #### Example:
+
+These examples require you to have some models saved in the database.
 
 - Get the first 10 `Foo`'s `http://localhost:8080/foo?limit=10`
 - Get `Foo`'s 2 and 3: `http://localhost:8080/foo?startIndex=1&limit=2`

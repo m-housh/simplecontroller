@@ -5,8 +5,9 @@ before_install:
     - brew upgrade
     - brew install vapor    
     - swift package resolve
-    - swift package generate-xcodeproj
+    - gem install xcpretty
 script:
-    - swift test
+    - swift package generate-xcodeproj
+    - set -o pipefail && xcode build -scheme SimpleController-Package -enableCodeCoverage YES clean build test | xcpretty
 after_success:
   - bash <(curl -s https://codecov.io/bash)

@@ -7,6 +7,7 @@
 
 import Vapor
 import FluentSQLite
+import SimpleController
 
 /// An example model.
 public final class Foo: SQLiteModel, Migration, Content, Parameter {

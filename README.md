@@ -62,45 +62,12 @@ Create a model that we can use for our controller.
     }
 ```
 
-### FooController.swift
-Create a controller for our model.
-
-``` swift
-    
-    import Vapor
-    import FluentSQLite
-    import SimpleController
-
-    /// An example controller.
-    ///
-    /// The `ModelController` protocol has default handlers
-    /// for quick - simple routes.
-    ///
-    public final class FooController: ModelController {
-        public typealias DBModel = Foo
-        public let path = "foo"
-    }
-
-    /// Conform our controller to `RouteCollection`.
-    extension FooController: RouteCollection {
-    
-        /// Create our CRUD routes for "/foo" end-point.
-        public func boot(router: Router) throws {
-            router.get(path, use: getHandler)
-            router.get(path, Foo.parameter, use: getByIdHandler)
-            router.post(path, use: createHandler)
-            router.put(path, Foo.parameter, use: updateHandler)
-            router.delete(path, Foo.parameter, use: deleteHandler)
-
-            /// Add more addvanced / custom routes if needed
-        }
-    
-    }
-
-```
-
 ### routes.swift
 Register your routes.
+
+The `ModelRouteCollection` class will register `GET`, `POST`, `GET:id`, `PUT`,
+and `DELETE` routes at the provided path.
+
 ``` swift
 
     import Vapor
@@ -113,9 +80,30 @@ Register your routes.
         }
 
         // Create a `FooController` to register with our router.
-        let fooController = FooController()
+        let fooController = ModelRouteCollection(
+            Foo.self, 
+            path: "path", "to", "foo",
+        )
         router.register(collection: fooController)
     }
+```
+
+We can optionally set all the routes to be grouped using middleware, useful for
+authenticated routes.
+
+```swift
+
+    public func routes(_ router: Router) throws {
+        ...
+
+        let fooController = ModelRouteCollection(
+            Foo.self,
+            path: "foo",
+            using: [MyMiddleware()]
+        )
+        router.register(collection: fooController)
+    }
+
 ```
 
 The application will now have simple CRUD routes for the `Foo` model.  The `GET`

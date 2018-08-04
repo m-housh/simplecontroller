@@ -8,6 +8,7 @@
 
 import Vapor
 import FluentSQLite
+import SimpleController
 
 extension Application {
     
@@ -27,8 +28,19 @@ extension Application {
         
         // setup our router for our test routes
         let router = EngineRouter.default()
-        let fooController = FooController()
-        try router.register(collection: fooController)
+        
+       
+        //let fooController = FooController()
+        //try router.register(collection: fooController)
+        let collection = ModelRouteCollection(
+            Foo.self,
+            path: "path", "to", "foo",
+            using: [PassThroughMiddleware()]
+        )
+        
+        let collection2 = ModelRouteCollection(Foo.self, path: ["foo"])
+        try router.register(collection: collection)
+        try router.register(collection: collection2)
         services.register(router, as: Router.self)
         
         // Configure a SQLite database
@@ -58,7 +70,12 @@ extension Application {
         try Application.testable(migrateEnvironment).asyncRun().wait()
     }
     
-    func sendRequest<T>(to path: String, method: HTTPMethod, headers: HTTPHeaders = .init(), body: T? = nil) throws -> Response where T: Content {
+    func sendRequest<T>(
+        to path: String,
+        method: HTTPMethod,
+        headers: HTTPHeaders = .init(),
+        body: T? = nil) throws -> Response where T: Content {
+        
         var headers = headers
         
         if !headers.contains(name: .contentType) {
@@ -74,7 +91,11 @@ extension Application {
         return try responder.respond(to: wrappedRequest).wait()
     }
     
-    func getResponse<C, T>(to path: String, method: HTTPMethod = .GET, headers: HTTPHeaders = .init(), data: C? = nil, decodeTo type: T.Type) throws -> T where C: Content, T: Decodable {
+    func getResponse<C, T>(
+        to path: String,
+        method: HTTPMethod = .GET,
+        headers: HTTPHeaders = .init(),
+        data: C? = nil, decodeTo type: T.Type) throws -> T where C: Content, T: Decodable {
         let response = try self.sendRequest(to: path, method: method, headers: headers, body: data)
         return try response.content.decode(type).wait()
     }
@@ -83,11 +104,6 @@ extension Application {
         let emptyContent: EmptyContent? = nil
         return try self.getResponse(to: path, method: method, headers: headers, data: emptyContent, decodeTo: type)
     }
-    
-    /*
-    func sendRequest<T>(to path: String, method: HTTPMethod, headers: HTTPHeaders, data: T) throws where T: Content {
-        _ = try self.sendRequest(to: path, method: method, headers: headers, body: data)
-    }*/
     
     func sendRequest(to path: String, method: HTTPMethod, headers: HTTPHeaders = .init()) throws -> Response {
         let emptyContent: EmptyContent? = nil

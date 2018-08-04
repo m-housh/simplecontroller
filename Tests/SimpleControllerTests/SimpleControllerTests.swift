@@ -6,7 +6,7 @@ import Vapor
 
 final class SimpleControllerTests: VaporTestCase {
     
-    let fooURI = "/foo"
+    let fooURI = "/path/to/foo"
     
     func testExample() {
         // This is an example of a functional test case.
@@ -22,6 +22,7 @@ final class SimpleControllerTests: VaporTestCase {
         
             let response = try app.getResponse(to: fooURI, decodeTo: [Foo].self)
             XCTAssertTrue(response.count == 1)
+
         }
     }
     

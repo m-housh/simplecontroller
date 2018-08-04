@@ -8,14 +8,16 @@
 import Vapor
 import Fluent
 
+
 /// A simple database model controller.
 /// This model add's CRUD route handler's to a class, that can easily
 /// be used as to register routes or make a `RouteController`.
-public protocol ModelController {
+public protocol ModelControllable {
     
     /// The database `Model` that this controller is for.
     /// The `DBModel` should conform to the `Model` and `Parameter` protocols
     associatedtype DBModel: Model, Parameter
+    
     
     /// The handler used for a `GET` request.
     /// The default implementations also allows limiting the results
@@ -44,6 +46,7 @@ public protocol ModelController {
     
 }
 
+/*
 extension ModelController {
     
     public func getHandler(_ request: Request) throws -> Future<[DBModel]> {
@@ -80,3 +83,4 @@ extension ModelController where DBModel.ResolvedParameter == Future<DBModel>{
     }
     
 }
+*/

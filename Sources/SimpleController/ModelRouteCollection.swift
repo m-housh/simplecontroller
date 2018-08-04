@@ -9,7 +9,7 @@ import Vapor
 import Fluent
 
 
-public class ModelRouteCollection<M> where M: Model & Parameter & Content, M.ResolvedParameter == Future<M> {
+open class ModelRouteCollection<M> where M: Model & Parameter & Content {
     
     public let Model: M.Type
     public let path: [PathComponentsRepresentable]
@@ -46,7 +46,7 @@ extension ModelRouteCollection {
     
 }
 
-extension ModelRouteCollection where M.ResolvedParameter == Future<M> {
+extension ModelRouteCollection: ModelControllable where M.ResolvedParameter == Future<M> {
     
     public func getByIdHandler(_ request: Request) throws -> Future<M> {
         return try request.parameters.next(Model.self)
@@ -66,9 +66,7 @@ extension ModelRouteCollection where M.ResolvedParameter == Future<M> {
     
 }
 
-extension ModelRouteCollection: ModelControllable { }
-
-extension ModelRouteCollection: RouteCollection {
+extension ModelRouteCollection: RouteCollection where M.ResolvedParameter == Future<M> {
 
     public func boot(router: Router) throws {
         var group = router

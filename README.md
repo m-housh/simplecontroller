@@ -28,7 +28,7 @@ Add the `SimpleController` package to your `Vapor3` project.
             .package(url: "https://github.com/vapor/fluent-sqlite.git", from: "3.0.0"),
         
             // Simple controller
-            .package(url: "https://github.com/m-housh/simplecontroller.git", from: "0.1.7") 
+            .package(url: "https://github.com/m-housh/simplecontroller.git", from: "0.1.8") 
         ],
         targets: [
             .target(name: "App", dependencies: ["Vapor", "FluentSQLite",

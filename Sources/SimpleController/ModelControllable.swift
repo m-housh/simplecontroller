@@ -11,13 +11,16 @@ import Fluent
 
 /// A simple database model controller.
 /// This model add's CRUD route handler's to a class, that can easily
-/// be used as to register routes or make a `RouteController`.
-public protocol ModelControllable {
+/// be used as to register routes or make a `RouteCollection`.
+public protocol ModelControllable: RouteCollection {
     
     /// The database `Model` that this controller is for.
     /// The `DBModel` should conform to the `Model` and `Parameter` protocols
     associatedtype DBModel: Model, Parameter
     
+    var path: [PathComponentsRepresentable] { get }
+    
+    var middleware: [Middleware] { get }
     
     /// The handler used for a `GET` request.
     /// The default implementations also allows limiting the results
@@ -46,8 +49,9 @@ public protocol ModelControllable {
     
 }
 
-/*
-extension ModelController {
+extension ModelControllable {
+    
+    public var middleware: [Middleware] { return [] }
     
     public func getHandler(_ request: Request) throws -> Future<[DBModel]> {
         return DBModel.query(on: request)
@@ -55,20 +59,18 @@ extension ModelController {
             .all()
     }
     
-    public func getByIdHandler(_ request: Request) throws -> Future<DBModel> {
-        return try request.parameters.next(DBModel.self) as! EventLoopFuture<DBModel>
-    }
-    
     public func createHandler(_ request: Request) throws -> Future<DBModel> {
         return try request.content.decode(DBModel.self).flatMap { model in
             return model.save(on: request)
         }
     }
-    
-    
 }
 
-extension ModelController where DBModel.ResolvedParameter == Future<DBModel>{
+extension ModelControllable where DBModel.ResolvedParameter == Future<DBModel> {
+    
+    public func getByIdHandler(_ request: Request) throws -> Future<DBModel> {
+        return try request.parameters.next(DBModel.self)
+    }
     
     public func deleteHandler(_ request: Request) throws -> Future<HTTPResponseStatus> {
         return try request.parameters.next(DBModel.self).flatMap { model in
@@ -81,6 +83,6 @@ extension ModelController where DBModel.ResolvedParameter == Future<DBModel>{
             return model.update(on: request)
         }
     }
-    
 }
-*/
+
+

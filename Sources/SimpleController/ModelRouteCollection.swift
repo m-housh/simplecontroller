@@ -9,65 +9,29 @@ import Vapor
 import Fluent
 
 
-open class ModelRouteCollection<M> where M: Model & Parameter & Content {
+public final class ModelRouteCollection<M>: ModelControllable where M: Model & Parameter & Content, M.ResolvedParameter == Future<M> {
+    
+    public typealias DBModel = M
     
     public let Model: M.Type
     public let path: [PathComponentsRepresentable]
     public let middleware: [Middleware]?
     
-    public init(_ type: M.Type, path: PathComponentsRepresentable..., using middleware: [Middleware]? = nil) {
+    public init(_ type: M.Type, path: PathComponentsRepresentable...,
+                using middleware: [Middleware]? = nil) {
         self.Model = type
         self.path = path
         self.middleware = middleware
     }
     
-    public init(_ type: M.Type, path: [PathComponentsRepresentable], using middleware: [Middleware]? = nil) {
+    public init(_ type: M.Type, path: [PathComponentsRepresentable],
+                using middleware: [Middleware]? = nil) {
         self.Model = type
         self.path = path
         self.middleware = middleware
     }
     
-}
-
-extension ModelRouteCollection {
-    
-    public func getHandler(_ request: Request) throws -> Future<[M]> {
-        return Model.query(on: request)
-            .limit(try request.limitingContext())
-            .all()
-    }
-    
-   
-    public func createHandler(_ request: Request) throws -> Future<M> {
-        return try request.content.decode(Model.self).flatMap { model in
-            return model.save(on: request)
-        }
-    }
-    
-}
-
-extension ModelRouteCollection: ModelControllable where M.ResolvedParameter == Future<M> {
-    
-    public func getByIdHandler(_ request: Request) throws -> Future<M> {
-        return try request.parameters.next(Model.self)
-    }
-    
-    public func deleteHandler(_ request: Request) throws -> Future<HTTPResponseStatus> {
-        return try request.parameters.next(Model.self).flatMap { model in
-            return model.delete(on: request)
-            }.transform(to: .ok)
-    }
-    
-    public func updateHandler(_ request: Request) throws -> Future<M> {
-        return try request.content.decode(Model.self).flatMap { model in
-            return model.update(on: request)
-        }
-    }
-    
-}
-
-extension ModelRouteCollection: RouteCollection where M.ResolvedParameter == Future<M> {
-
+    /// See `RouteCollection`.
     public func boot(router: Router) throws {
         var group = router
         if let middleware = middleware {
@@ -81,3 +45,4 @@ extension ModelRouteCollection: RouteCollection where M.ResolvedParameter == Fut
         group.delete(path, Model.parameter, use: deleteHandler)
     }
 }
+

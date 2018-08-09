@@ -23,3 +23,17 @@ public final class Foo: SQLiteModel, Migration, Content, Parameter {
         self.bar = bar
     }
 }
+
+public final class PublicFoo: PublicConvertible, Content {
+    public typealias DBModel = Foo
+    
+    public var bar: String
+    
+    init(bar: String) {
+        self.bar = bar
+    }
+    
+    public static func convert(_ model: Foo) throws -> Codable {
+        return PublicFoo(bar: model.bar)
+    }
+}
